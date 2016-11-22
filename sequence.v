@@ -24,10 +24,11 @@ module sequence(
     input clk,
     input reset,
     input [3:0] x,
-    output [3:0] y
+    output reg [3:0] y
     //    output [3:0] nowst,
     //    output [15:0] codeout
     );
+
     parameter
       lock = 0,         //
       first = 1,        //
@@ -51,7 +52,7 @@ module sequence(
 
       reg [15:0] code=16'h0000;
       reg [15:0] usrCode = 16'h0000;
-      reg [3:0] y;
+    //   reg [3:0] y;
       reg [3:0] state=4'b0000;
       reg [3:0] next=4'b0000;
       reg [1:0] errPass = 2'b00;
@@ -82,7 +83,7 @@ module sequence(
                         next <= lock;
                     end
                 end
-                y=4'b0000;
+                y <= 4'b0000;
             end
             first:begin
                 if(x==code[11:8])begin
@@ -95,7 +96,7 @@ module sequence(
                         next <= lock;
                     end
                 end
-                y=4'b0000;
+                y <= 4'b0000;
             end
             second:begin
                 if(x==code[7:4])begin
@@ -108,7 +109,7 @@ module sequence(
                         next <= lock;
                     end
                 end
-                y=4'b0000;
+                y <= 4'b0000;
             end
             third:begin
                 if(x==code[3:0])begin
@@ -121,7 +122,7 @@ module sequence(
                         next <= lock;
                     end
                 end
-                y=4'b0000;
+                y <= 4'b0000;
             end
             forth:begin
                 if(x==4'h0)begin
@@ -137,7 +138,7 @@ module sequence(
                     end
                 end
 
-                y=4'b0001;
+                y <= 4'b0001;
             end
 
 
@@ -166,7 +167,7 @@ module sequence(
                 else begin
                     next <= lockout;
                 end
-                y=4'b0010;
+                y <= 4'b0010;
             end
 
             lockout2:begin
@@ -177,7 +178,7 @@ module sequence(
                 else begin
                     next <= lockout;
                 end
-                y=4'b0010;
+                y <= 4'b0010;
             end
 
             lock2:begin
@@ -192,7 +193,7 @@ module sequence(
                         // next <= lockout;
                     end
                 end
-                y=4'b0000;
+                y <= 4'b0000;
             end
 
             first2:begin
@@ -207,7 +208,7 @@ module sequence(
                         // next <= lockout;
                     end
                 end
-                y=4'b0000;
+                y <= 4'b0000;
             end
 
             second2:begin
@@ -222,7 +223,7 @@ module sequence(
                         // next <= lockout;
                     end
                 end
-                y=4'b0000;
+                y <= 4'b0000;
             end
 
             third2:begin
@@ -237,10 +238,10 @@ module sequence(
                         // next <= lockout;
                     end
                 end
-                y=4'b0000;
+                y <= 4'b0000;
             end
 
-            default:y=4'b0000;
+            default:y <= 4'b0000;
         endcase
     end
 endmodule

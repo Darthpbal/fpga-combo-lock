@@ -1,47 +1,34 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company:
-// Engineer:
-//
-// Create Date: 11/17/2016 09:57:45 AM
-// Design Name:
-// Module Name: KeypadTest
-// Project Name:
-// Target Devices:
-// Tool Versions:
-// Description:
-//
-// Dependencies:
-//
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-//
+/*
+
+todo:
+solve momentary keypad detection
+create single flag for whether or not a user pass has been stored
+make the new user pass get stored where the default code used to be
+have seperate set of reg for the override code
+
+*/
 //////////////////////////////////////////////////////////////////////////////////
 
 
 module KeypadTest(
-    clk,
-    JA,
-    an,
-    seg,
-    reset,
-    btnC//line 41
+    input clk,					// 100Mhz onboard clock
+    inout [7:0] JA,			// Port JA on Artix7, JA[3:0] is Columns, JA[10:7] is rows
+    input reset,
+    input btnC,
+    output [3:0] an,			// Anodes on seven segment display
+    output [6:0] seg,
+    output keyFlag
     );
 
 
 // ==============================================================================================
 // 											Port Declarations
 // ==============================================================================================
-	input clk;					// 100Mhz onboard clock
-	inout [7:0] JA;			// Port JA on Artix7, JA[3:0] is Columns, JA[10:7] is rows
-	output [3:0] an;			// Anodes on seven segment display
-	output [6:0] seg;
-	input  reset;
-	input btnC;
 	reg [30:0] counter;
 	reg [1:0] count;  // declaring a 31 bits counter
-     reg slow_clk;
+    reg slow_clk;
 
 // ==============================================================================================
 // 							  		Parameters, Regsiters, and Wires
@@ -82,7 +69,8 @@ always @(posedge clk or posedge reset)
 			.clk(clk),
 			.Row(JA[7:4]),
 			.Col(JA[3:0]),
-			.DecodeOut(Decode)
+			.DecodeOut(Decode),
+            .ping(keyFlag)
 	);
 
 

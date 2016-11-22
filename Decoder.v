@@ -44,7 +44,8 @@ module Decoder(
     clk,
     Row,
     Col,
-    DecodeOut
+    DecodeOut,
+    ping
     );
 
 // ==============================================================================================
@@ -52,8 +53,9 @@ module Decoder(
 // ==============================================================================================
     input clk;						// 100MHz onboard clock
     input [3:0] Row;				// Rows on KYPD
-    output [3:0] Col;			// Columns on KYPD
-    output [3:0] DecodeOut;	// Output data
+    output [3:0] Col;			    // Columns on KYPD
+    output [3:0] DecodeOut;	        // Output data
+    output ping;                    //flag showing any key is pressed
 
 // ==============================================================================================
 // 							  		Parameters, Regsiters, and Wires
@@ -69,6 +71,7 @@ module Decoder(
 // ==============================================================================================
 // 												Implementation
 // ==============================================================================================
+    assign ping = ~(&Row);
 
 	always @(posedge clk) begin
 

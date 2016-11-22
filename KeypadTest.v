@@ -3,7 +3,6 @@
 /*
 
 todo:
-solve momentary keypad detection
 create single flag for whether or not a user pass has been stored
 make the new user pass get stored where the default code used to be
 have seperate set of reg for the override code
@@ -23,27 +22,19 @@ module KeypadTest(
     );
 
 
-// ==============================================================================================
-// 											Port Declarations
-// ==============================================================================================
 	reg [30:0] counter;
 	reg [1:0] count;  // declaring a 31 bits counter
     reg slow_clk;
 
-// ==============================================================================================
-// 							  		Parameters, Regsiters, and Wires
-// ==============================================================================================
 
 	// Output wires
 	wire [3:0] an;
 	wire [6:0] seg;
 
 
-   // wire press;
-    //wire press_notdeb;
-// ==============================================================================================
-// 												Implementation
-// ==============================================================================================
+
+
+
 always @(posedge clk or posedge reset)
  begin
      if (reset)

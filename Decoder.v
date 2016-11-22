@@ -72,12 +72,20 @@ module Decoder(
 
 	always @(posedge clk) begin
 
+
+
+
+
 			// 1ms
 			if (sclk == 20'b00011000011010100000) begin
 				//C1
 				Col <= 4'b0111;
 				sclk <= sclk + 1'b1;
 			end
+
+
+
+
 
 			// check row pins
 			else if(sclk == 20'b00011000011010101000) begin
@@ -100,12 +108,20 @@ module Decoder(
 				sclk <= sclk + 1'b1;
 			end
 
+
+
+
+
 			// 2ms
 			else if(sclk == 20'b00110000110101000000) begin
 				//C2
 				Col<= 4'b1011;
 				sclk <= sclk + 1'b1;
 			end
+
+
+
+
 
 			// check row pins
 			else if(sclk == 20'b00110000110101001000) begin
@@ -128,12 +144,20 @@ module Decoder(
 				sclk <= sclk + 1'b1;
 			end
 
+
+
+
+
 			//3ms
 			else if(sclk == 20'b01001001001111100000) begin
 				//C3
 				Col<= 4'b1101;
 				sclk <= sclk + 1'b1;
 			end
+
+
+
+
 
 			// check row pins
 			else if(sclk == 20'b01001001001111101000) begin
@@ -157,12 +181,20 @@ module Decoder(
 				sclk <= sclk + 1'b1;
 			end
 
+
+
+
+
 			//4ms
 			else if(sclk == 20'b01100001101010000000) begin
 				//C4
 				Col<= 4'b1110;
 				sclk <= sclk + 1'b1;
 			end
+
+
+
+
 
 			// Check row pins
 			else if(sclk == 20'b01100001101010001000) begin

@@ -72,6 +72,7 @@ module sequence(
 //assign codeout=code;
     always@(x or state)begin
         case(state)
+        
             lock:begin
                 if(x==code[15:12])begin
                     next <= first;
@@ -85,6 +86,7 @@ module sequence(
                 end
                 y <= 4'b0000;
             end
+            
             first:begin
                 if(x==code[11:8])begin
                     next <= second;
@@ -98,6 +100,7 @@ module sequence(
                 end
                 y <= 4'b0000;
             end
+            
             second:begin
                 if(x==code[7:4])begin
                     next <= third;
@@ -111,6 +114,7 @@ module sequence(
                 end
                 y <= 4'b0000;
             end
+            
             third:begin
                 if(x==code[3:0])begin
                     next <= forth;
@@ -124,6 +128,7 @@ module sequence(
                 end
                 y <= 4'b0000;
             end
+            
             forth:begin
                 if(x==4'h0)begin
                     next <= defPass1;

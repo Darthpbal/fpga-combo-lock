@@ -12,6 +12,7 @@ module sequence(
 
 
     reg [15:0] defaultCode = 16'h0000, usrCode = 16'h0000;
+    reg [31:0] overrideCode = 32'b0;
     reg [1:0] passErrCount = 2'b00;
 
 

@@ -6,7 +6,7 @@ module basys_tb ();
     // wire segDec;
     wire [6:0] sevSeg;
     wire [1:0] led;
-    wire [2:0] numCount;
+    // wire [2:0] numCount;
 
 
     basys dut(
@@ -20,7 +20,7 @@ module basys_tb ();
         .segEn(segEn),
         // .segDec(segDec),
         .sevSeg(sevSeg),
-        .numCount(numCount),
+        // .numCount(numCount),
         .led(led)
     );
 

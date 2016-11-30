@@ -5,48 +5,70 @@ module upDownCount_tb ();
 
 
     upDownCount dut(
-        .up(up)
-        .down(down)
-        .rst(rst)
-        .numOut(numOut)
+        .up(up),
+        .down(down),
+        .rst(rst),
+        .numOut(number)
     );
 
-    parameter clk_period = 4;
-    always #clk_period clk = ~clk;
 
 
     initial begin
-        clk = 0;
         rst = 1;
         up = 0;
         down = 0;
-        #(clk_period * 4);
+        #4;
         rst = 0;
-        #(clk_period * 4);
+        #4;
         //1
         up = 1;
-        #(clk_period * 4);
+        #4;
         up = 0;
-        #(clk_period * 4);
+        #4;
         //2
         up = 1;
-        #(clk_period * 4);
+        #4;
         up = 0;
-        #(clk_period * 4);
+        #4;
         //3
         up = 1;
-        #(clk_period * 4);
+        #4;
         up = 0;
-        #(clk_period * 4);
+        #4;
         //4
         up = 1;
-        #(clk_period * 4);
+        #4;
         up = 0;
-        #(clk_period * 4);
+        #4
+        //4
+        down = 1;
+        #4;
+        down = 0;
+        #4
+        //4
+        down = 1;
+        #4;
+        down = 0;
+        #4
+        //4
+        down = 1;
+        #4;
+        down = 0;
+        #4
+        //4
+        down = 1;
+        #4;
+        down = 0;
+        #4
+        //4
+        down = 1;
+        #4;
+        down = 0;
+        #4
 
+        rst = 1;
+        #30;
 
-
-
-        $finish
+        $finish;
     end
 endmodule

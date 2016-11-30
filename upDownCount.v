@@ -5,7 +5,7 @@ module upDownCount (
         output reg [3:0] numOut
     );
 
-    always @ ( negedge up, negedge down, posedge rst ) begin
+    always @ ( posedge up, posedge down, posedge rst ) begin
         if(rst) numOut <= 0;
         else begin
             if(up) numOut <= numOut + 1;

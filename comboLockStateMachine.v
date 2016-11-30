@@ -6,24 +6,24 @@ module comboLockStateMachine (
         output reg [1:0] state
     );
 
-    parameter defaultPass = 16'hFACE;
+    parameter defaultPass = 16'hFACE, override = 16'hDADA;
     parameter errMax = 3;
     parameter  locked = 0,
                 unlocked = 1,
                 lockout = 2,
                 definePin = 3;
 
-    reg [15:0] passWord = defaultPass, override = 16'hDADA;
+    reg [15:0] passWord = defaultPass;
     reg usrPinSet = 0;
     reg [1:0] nextState, errCount;
 
-    always @ ( posedge trig, posedge rst, posedge clk ) begin
+    always @ ( /*posedge trig,*/ posedge rst, posedge clk ) begin
         if(rst) begin
-            usrPinSet <= 0;
-            passWord <= defaultPass;
+            // usrPinSet <= 0;
+            // passWord <= defaultPass;
             state <= locked;
-            nextState <= locked;
-            errCount <= 0;
+            // nextState <= locked;
+            // errCount <= 0;
         end
         else state <= nextState;
     end

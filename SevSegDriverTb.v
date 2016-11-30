@@ -17,7 +17,7 @@ module SevSegDriver_tb ();
                     .seg(seg)
                 );
 
-    parameter clk_period = 4,
+    parameter clk_period = 4;
 
     always #clk_period clk = ~clk;
 

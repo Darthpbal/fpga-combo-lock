@@ -11,7 +11,7 @@ module SevSegDriver(
     // parameter used for multiplexing the display output
     //change to 2 for simulation and to 20 for hardware (usually 18 < n < 25, lower is too fast, and higher is too slow)
     //2 would make it so that there's no delay where any displays are off, otherwise all displays are off until the 2 MSB are reached
-    parameter n = 2;
+    parameter n = 20;
     reg [n - 1:0] qReg, qNext;//counter registers for delaying the display operation for human eyes.
     reg [1:0] sel;//the 2 most significant bits of qReg, used for selecting the segment to display on.
     reg [3:0] disp;//the 4 bit number to display on the current segment

@@ -15,7 +15,7 @@ module basys (
         output [3:0] segEn, //basys seven segment enable bus
         // output segDec,         //seven segment decimal point
         output [6:0] sevSeg,//seven segment signals
-        output [2:0] numCount,
+        // output [2:0] numCount,
         output [1:0] led   //basys board LED array
     );
 
@@ -47,6 +47,7 @@ module basys (
         .seg(sevSeg)
     );
 
+    wire [2:0] numCount;
     wire flag;
     countTo4 triggerMachineOn4(
         .trig(btnC),

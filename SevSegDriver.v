@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
 
-module SevsegDispDriver(
-        input clk, rst
-        input disp3, disp2, disp1, disp0;;
+module SevSegDriver(
+        input clk, rst,
+        input disp3, disp2, disp1, disp0,
         output reg [3:0] segEn,
         output  [6:0] seg
     );

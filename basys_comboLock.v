@@ -47,7 +47,7 @@ module basys (
         .seg(sevSeg)
     );
 
-    wire [2:0] numCount;
+    wire [1:0] numCount;
     wire flag;
     countTo4 triggerMachineOn4(
         .trig(btnC),

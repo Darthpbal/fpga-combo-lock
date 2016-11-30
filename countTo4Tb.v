@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 module countTo4_tb ();
     reg trig, rst;
-    wire [2:0] count;
+    wire [1:0] count;
     wire flag;
 
 

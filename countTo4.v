@@ -2,7 +2,7 @@
 
 module countTo4 (
         input trig, rst,
-        output reg [2:0] count,
+        output reg [1:0] count,
         output reg flag
     );
 

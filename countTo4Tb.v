@@ -2,12 +2,14 @@
 module countTo4_tb ();
     reg trig, rst;
     wire [2:0] count;
+    wire flag;
 
 
     countTo4 dut(
         .trig(trig),
         .rst(rst),
-        .count(count)
+        .count(count),
+        .flag(flag)
     );
 
     initial begin

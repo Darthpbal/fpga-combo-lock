@@ -2,7 +2,7 @@
 Top module is modeled as the basys board itself to
 be more intuitive.
 */
-
+`timescale 1ns / 1ps
 
 module basys (
         // input [1:0] swt,   //basys board switches

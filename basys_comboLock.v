@@ -18,6 +18,48 @@ module basys (
         output [15:0] led   //basys board LED array
     );
 
-    upDownCount myudCount();
+    wire [3:0] numSelect;
+    upDownCount hexValSelector(
+        .up(btnR),
+        .down(btnL),
+        .rst(swt[0]),
+        .numOut(numSelect)
+    );
+
+    wire [15:0] pinCode;
+    fourIn16OutShiftReg shiftInPin(
+        .in(numSelect),
+        .trig(btnC),
+        .rst(swt[0]),
+        .out(pinCode)
+    );
+
+    SevSegDriver comboLockDisplay(
+        .clk(clk),
+        .rst(swt[0]),
+        .disp3(pinCode[15:12]),
+        .disp2(pinCode[11:8]),
+        .disp1(pinCode[7:4]),
+        .disp0(numSelect),
+        .segEn(segEn),
+        .seg(sevSeg)
+    );
+
+    wire [2:0] numCount;
+    countTo4 triggerMachineOn4(
+        .trig(btnC),
+        .rst(swt[0]),
+        .count(numCount)
+    );
+
+    comboLockStateMachine(
+        .pinCode(pinCode),
+        .trig(numCount[2]),
+        .lock(swt[15]),
+        .rst(swt[0]),
+        .clk(clk),
+        .state(led[1:0])
+    );
+
 
 endmodule

@@ -17,37 +17,46 @@ module SevSegDriver_tb ();
                     .seg(seg)
                 );
 
-    parameter clk_period = 4;
+    parameter clk_period = 10;
 
     always #clk_period clk = ~clk;
 
     initial begin
         clk = 0;
         rst = 1;
-
-        disp3 = 4'h0; disp2 = 4'h0; disp1 = 4'h0; disp0 = 4'h0;
-        #(clk_period * 2);
-
+        #(clk_period * 6);
         rst = 0;
         disp3 = 4'h0; disp2 = 4'h0; disp1 = 4'h0; disp0 = 4'h0;
-        #(clk_period * 2);
+        #(clk_period * 6);
+        disp3 = 4'h0; disp2 = 4'h0; disp1 = 4'h0; disp0 = 4'h1;
+        #(clk_period * 6);
+        disp3 = 4'h0; disp2 = 4'h0; disp1 = 4'h0; disp0 = 4'h2;
+        #(clk_period * 6);
+        disp3 = 4'h0; disp2 = 4'h0; disp1 = 4'h0; disp0 = 4'h3;
+        #(clk_period * 6);
+        disp3 = 4'h0; disp2 = 4'h0; disp1 = 4'h0; disp0 = 4'hF;
+        #(clk_period * 6);
+        $finish;
+        rst = 0;
+        disp3 = 4'h0; disp2 = 4'h0; disp1 = 4'h0; disp0 = 4'h0;
+        #(clk_period * 6);
 
         disp3 = 4'h0; disp2 = 4'h0; disp1 = 4'h0; disp0 = 4'h1;
-        #(clk_period * 2);
+        #(clk_period * 6);
 
         disp3 = 4'h0; disp2 = 4'h0; disp1 = 4'h1; disp0 = 4'h0;
-        #(clk_period * 2);
+        #(clk_period * 6);
 
         disp3 = 4'h0; disp2 = 4'h1; disp1 = 4'h0; disp0 = 4'h0;
-        #(clk_period * 2);
+        #(clk_period * 6);
 
         disp3 = 4'h1; disp2 = 4'h0; disp1 = 4'h0; disp0 = 4'h0;
-        #(clk_period * 2);
+        #(clk_period * 6);
 
 
 
         disp3 = 4'h3; disp2 = 4'h2; disp1 = 4'h1; disp0 = 4'h0;
-        #(clk_period * 2);
+        #(clk_period * 6);
         $finish;
 
     end

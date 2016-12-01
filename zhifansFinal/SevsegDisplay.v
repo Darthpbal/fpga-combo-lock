@@ -1,23 +1,4 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 11/17/2016 09:52:54 AM
-// Design Name: 
-// Module Name: SevsegDisplay
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
 
 module SevsegDisplay(
@@ -37,7 +18,7 @@ module SevsegDisplay(
 // ==============================================================================================
 // 							  		Parameters, Regsiters, and Wires
 // ==============================================================================================
-	
+
 	// Output wires and registers
 	wire [3:0] anode;
 	reg [6:0] segOut;
@@ -45,10 +26,10 @@ module SevsegDisplay(
 // ==============================================================================================
 // 												Implementation
 // ==============================================================================================
-	
+
 	// only display the rightmost digit
 	assign anode = 4'b1110;
-	
+
 	//------------------------------
 	//		   Segment Decoder
 	// Determines cathode pattern
@@ -78,9 +59,8 @@ module SevsegDisplay(
 					4'h1: segOut <= 7'b1000001; //U
 					4'h2: segOut <= 7'b0001001; //H
 					default : segOut <= 7'b1000111;
-					
+
 			endcase
 	end
 
 endmodule
-

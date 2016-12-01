@@ -1,23 +1,4 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 11/21/2016 09:28:49 PM
-// Design Name: 
-// Module Name: topmodule
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
 
 module topmodule(
@@ -33,7 +14,7 @@ module topmodule(
     wire [3:0] lock;
     wire slow_clk;
     slowclock(clk,btnU,slow_clk);
-    
+
     wire trigger; assign trigger = btnC & slow_clk;
     create_input(trigger,sw,in);
     diagram(in,btnU,trigger,lock,led);

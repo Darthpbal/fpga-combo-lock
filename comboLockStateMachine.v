@@ -17,43 +17,47 @@ module comboLockStateMachine (
     reg usrPinSet = 0;
     reg [1:0] nextState, errCount;
 
-    always @ ( /*posedge trig,*/ posedge rst, posedge clk ) begin
+    always @ ( posedge trig, posedge rst, posedge clk ) begin
         if(rst) begin
-            // usrPinSet <= 0;
-            // passWord <= defaultPass;
+            usrPinSet <= 0;
+            passWord <= defaultPass;
             state <= locked;
-            // nextState <= locked;
-            // errCount <= 0;
+            nextState <= locked;
+            errCount <= 0;
         end
-        else state <= nextState;
+        else begin
+            if(trig) state <= nextState;
+        end
     end
 
-    always @ ( /*posedge trig or*/ posedge lock ) begin
-        case (state)
-            locked:begin
-                if( pinCode == passWord ) begin
-                    nextState <= (usrPinSet)? unlocked: definePin;
+    always @ (  posedge lock, posedge trig ) begin
+        if(trig) begin
+            case (state)
+                locked:begin
+                    if( pinCode == passWord ) begin
+                        nextState <= (usrPinSet)? unlocked: definePin;
+                        errCount <= 0;
+                    end
+                    else begin
+                        errCount <= errCount + 1;
+                        if(errCount == (errMax - 1)) nextState <= lockout;
+                    end
+                end
+                definePin:begin
+                    passWord <= pinCode;
+                    usrPinSet <= 1;
+                    nextState <= locked;
                     errCount <= 0;
                 end
-                else begin
-                    errCount <= errCount + 1;
-                    if(errCount == (errMax - 1)) nextState <= lockout;
+                unlocked: if(lock) nextState <= locked;
+                lockout: begin
+                    if(pinCode == override) begin
+                        nextState <= definePin;
+                        errCount <= 0;
+                    end
                 end
-            end
-            definePin:begin
-                passWord <= pinCode;
-                usrPinSet <= 1;
-                nextState <= locked;
-                errCount <= 0;
-            end
-            unlocked: if(lock) nextState <= locked;
-            lockout: begin
-                if(pinCode == override) begin
-                    nextState <= definePin;
-                    errCount <= 0;
-                end
-            end
-            default: nextState <= locked;
-        endcase
+                default: nextState <= locked;
+            endcase
+        end
     end
 endmodule

@@ -28,7 +28,7 @@ module comboLockStateMachine (
         else state <= nextState;
     end
 
-    always @ ( posedge trig or posedge lock ) begin
+    always @ ( /*posedge trig or*/ posedge lock ) begin
         case (state)
             locked:begin
                 if( pinCode == passWord ) begin

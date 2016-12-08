@@ -4,8 +4,8 @@ module basys_tb ();
     reg clk, btnU, btnD, btnL, btnR, btnC;
     wire [3:0] segEn;
     // wire segDec;
-    wire [6:0] sevSeg;
-    wire [1:0] led;
+    wire [6:0] seg;
+    wire [15:0] led;
     // wire [2:0] numCount;
 
 
@@ -19,7 +19,7 @@ module basys_tb ();
         .btnC(btnC),
         .segEn(segEn),
         // .segDec(segDec),
-        .sevSeg(sevSeg),
+        .seg(seg),
         // .numCount(numCount),
         .led(led)
     );

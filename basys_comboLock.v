@@ -16,49 +16,39 @@ module basys (
         // output segDec,         //seven segment decimal point
         output [6:0] seg,//seven segment signals
         // output [2:0] numCount,
-        output [1:0] led   //basys board LED array
+        output [15:0] led   //basys board LED array
     );
 
-    wire slow_clk;
-    slowclock forInput(
-        .clk(clk),
-        .reset(btnD),
-        .slow_clk(slow_clk)
-    );
+    assign led[3:2] = {btnR, btnR_debounce};
+    assign led[15:4] = 0;
 
-    reg leftTrig, rightTrig;
 
-    wire centerTrig; assign centerTrig = btnC & clk;
-
-    always @ ( clk ) begin
-        if(btnL) leftTrig <= 1;
-        else leftTrig <= 0;
-        if(btnR) rightTrig <= 1;
-        else rightTrig <= 0;
-        // leftTrig <= (btnL)? 1: 0;
-        // rightTrig <= (btnR)? 1: 0;
-        // centerTrig <= (btnC)? btnC & clk: 0;
-    end
+    wire btnL_debounce, btnR_debounce, btnU_debounce, btnC_debounce, btnD_debounce;
+    debounce left( .Clk(clk), .PB(btnL), .pulse(btnL_debounce) );
+    debounce right( .Clk(clk), .PB(btnR), .pulse(btnR_debounce) );
+    debounce up( .Clk(clk), .PB(btnU), .pulse(btnU_debounce) );
+    debounce center( .Clk(clk), .PB(btnC), .pulse(btnC_debounce) );
+    debounce down( .Clk(clk), .PB(btnD), .pulse(btnD_debounce) );
 
     wire [3:0] numSelect;
     upDownCount hexValSelector(
-        .up(rightTrig),
-        .down(leftTrig),
-        .rst(btnD),
+        .up(btnR_debounce),
+        .down(btnL_debounce),
+        .rst(btnD_debounce),
         .numOut(numSelect)
     );
 
     wire [15:0] pinCode;
     fourIn16OutShiftReg shiftInPin(
         .in(numSelect),
-        .trig(centerTrig),
-        .rst(btnD),
+        .trig(btnC_debounce),
+        .rst(btnD_debounce),
         .out(pinCode)
     );
 
     SevSegDriver comboLockDisplay(
         .clk(clk),
-        .rst(btnD),
+        .rst(btnD_debounce),
         .disp3(pinCode[15:12]),
         .disp2(pinCode[11:8]),
         .disp1(pinCode[7:4]),
@@ -70,8 +60,8 @@ module basys (
     wire [1:0] numCount;
     wire flag;
     countTo4 triggerMachineOn4(
-        .trig(centerTrig),
-        .rst(btnD),
+        .trig(btnC_debounce),
+        .rst(btnD_debounce),
         .count(numCount),
         .flag(flag)
     );
@@ -79,8 +69,8 @@ module basys (
     comboLockStateMachine stateMachine(
         .pinCode({pinCode[15:4], numSelect}),
         .trig(flag),
-        .lock(btnU),
-        .rst(btnD),
+        .lock(btnU_debounce),
+        .rst(btnD_debounce),
         .clk(clk),
         .state(led[1:0])
     );

@@ -19,19 +19,22 @@ module comboLockStateMachine (
 
     always @ ( posedge trig, posedge rst, posedge clk ) begin
         if(rst) begin
-            usrPinSet <= 0;
-            passWord <= defaultPass;
             state <= locked;
-            nextState <= locked;
-            errCount <= 0;
         end
         else begin
             if(trig) state <= nextState;
+            else state <= state;
         end
     end
 
-    always @ (  posedge lock, posedge trig ) begin
-        if(trig) begin
+    always @ (  posedge lock, posedge trig, posedge rst ) begin
+        if(rst) begin
+            usrPinSet <= 0;
+            passWord <= defaultPass;
+            nextState <= locked;
+            errCount <= 0;
+        end
+        else if(trig) begin
             case (state)
                 locked:begin
                     if( pinCode == passWord ) begin

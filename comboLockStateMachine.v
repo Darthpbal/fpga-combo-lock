@@ -1,23 +1,28 @@
+/*
+Performance glitches exist in this file.
+*/
+
+
 `timescale 1ns / 1ps
 
 module comboLockStateMachine (
         input [15:0] pinCode,
         input trig, lock, rst, clk,
-        output reg [1:0] state
+        output reg [1:0] state, errCount
     );
 
     parameter defaultPass = 16'hFACE, override = 16'hDADA;
     parameter errMax = 3;
-    parameter  locked = 0,
-                unlocked = 1,
-                lockout = 2,
-                definePin = 3;
+    parameter  locked = 3,
+                unlocked = 2,
+                lockout = 0,
+                definePin = 1;
 
     reg [15:0] passWord = defaultPass;
-    reg usrPinSet = 0;
-    reg [1:0] nextState, errCount;
+    reg usrPinSet = 1'b0;
+    reg [1:0] nextState;//, errCount;
 
-    always @ ( posedge trig, posedge rst, posedge clk ) begin
+    always @ ( posedge clk ) begin
         if(rst) begin
             state <= locked;
         end
@@ -28,13 +33,14 @@ module comboLockStateMachine (
     end
 
     always @ (  posedge lock, posedge trig, posedge rst ) begin
+        nextState
         if(rst) begin
             usrPinSet <= 0;
             passWord <= defaultPass;
             nextState <= locked;
             errCount <= 0;
         end
-        else if(trig) begin
+        else if(trig || lock) begin
             case (state)
                 locked:begin
                     if( pinCode == passWord ) begin

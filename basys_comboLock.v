@@ -35,6 +35,7 @@ module basys (
         .up(btnR_debounce),
         .down(btnL_debounce),
         .rst(btnD_debounce),
+        .clk(clk),
         .numOut(numSelect)
     );
 

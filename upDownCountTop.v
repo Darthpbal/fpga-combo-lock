@@ -28,7 +28,7 @@ module upDownCountTop (
     debounce right(.Clk(clk), .PB(btnR), .pulse(btnR_deb));
 
     wire [3:0] numberSelection;
-    upDownCount numSelector(.up(btnR_deb), .down(btnL_deb), .rst(btnD_deb), .numOut(numberSelection));
+    upDownCount numSelector(.up(btnR_deb), .down(btnL_deb), .rst(btnD_deb), .clk(clk), .numOut(numberSelection));
 
     SevSegDriver disp(.clk(clk),
                     .rst(btnD_deb),

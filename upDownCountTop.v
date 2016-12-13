@@ -13,8 +13,8 @@ module upDownCountTop (
         input btnR,         //up button on basys board
         // input btnC,         //up button on basys board
         output [3:0] segEn, //basys seven segment enable bus
-        output segDec,         //seven segment decimal point
-        output [6:0] sevSeg//seven segment signals
+        // output segDec,         //seven segment decimal point
+        output [6:0] seg//seven segment signals
         // output [15:0] led   //basys board LED array
     );
 
@@ -23,11 +23,11 @@ module upDownCountTop (
     //down, reset
 
     wire btnD_deb, btnL_deb, btnR_deb;
-    debounce debouncer(.Clk(clk), .PB(btnD), .pulse(btnD_deb));
-    debounce debouncer(.Clk(clk), .PB(btnL), .pulse(btnL_deb));
-    debounce debouncer(.Clk(clk), .PB(btnR), .pulse(btnR_deb));
+    debounce down(.Clk(clk), .PB(btnD), .pulse(btnD_deb));
+    debounce left(.Clk(clk), .PB(btnL), .pulse(btnL_deb));
+    debounce right(.Clk(clk), .PB(btnR), .pulse(btnR_deb));
 
-    wire numberSelection;
+    wire [3:0] numberSelection;
     upDownCount numSelector(.up(btnR_deb), .down(btnL_deb), .rst(btnD_deb), .numOut(numberSelection));
 
     SevSegDriver disp(.clk(clk),
@@ -37,7 +37,7 @@ module upDownCountTop (
                     .disp1(4'h0),
                     .disp0(numberSelection),
                     .segEn(segEn),
-                    .seg(sevSeg)
+                    .seg(seg)
                 );
 
 endmodule

@@ -14,33 +14,32 @@ module comboLockStateMachine (
     parameter defaultPass = 16'hFACE, override = 16'hDADA;
     parameter errMax = 3;
     parameter  locked = 3,
-                unlocked = 2,
+                unlocked = 1,
                 lockout = 0,
-                definePin = 1;
+                definePin = 2;
 
     reg [15:0] passWord = defaultPass;
     reg usrPinSet = 1'b0;
     reg [1:0] nextState;//, errCount;
 
-    always @ ( posedge clk ) begin
-        if(rst) begin
-            state <= locked;
-        end
+    always @ ( posedge clk, posedge rst ) begin
+        if(rst) state <= locked;
         else begin
-            if(trig) state <= nextState;
-            else state <= state;
+            state <= nextState;
+            // if(trig) state <= nextState;
+            // else state <= state;
         end
     end
 
     always @ (  posedge lock, posedge trig, posedge rst ) begin
-        nextState
+        nextState <= 2'bx;
         if(rst) begin
             usrPinSet <= 0;
             passWord <= defaultPass;
             nextState <= locked;
             errCount <= 0;
         end
-        else if(trig || lock) begin
+        else if(trig | lock) begin
             case (state)
                 locked:begin
                     if( pinCode == passWord ) begin
@@ -50,6 +49,7 @@ module comboLockStateMachine (
                     else begin
                         errCount <= errCount + 1;
                         if(errCount == (errMax - 1)) nextState <= lockout;
+                        else nextState <= locked;
                     end
                 end
                 definePin:begin
@@ -58,15 +58,20 @@ module comboLockStateMachine (
                     nextState <= locked;
                     errCount <= 0;
                 end
-                unlocked: if(lock) nextState <= locked;
+                unlocked: begin
+                    if(lock) nextState <= locked;
+                    else nextState <= unlocked;
+                end
                 lockout: begin
                     if(pinCode == override) begin
                         nextState <= definePin;
                         errCount <= 0;
                     end
+                    else nextState <= lockout;
                 end
                 default: nextState <= locked;
             endcase
         end
+        else nextState <= 2'bx;
     end
 endmodule

@@ -2,7 +2,7 @@
 module comboLockStateMachine_tb ();
     reg [15:0] pinCode;
     reg trig, lock, rst, clk;
-    wire [1:0] state;
+    wire [1:0] state, errCount;
 
 
     comboLockStateMachine dut(
@@ -11,7 +11,8 @@ module comboLockStateMachine_tb ();
         .lock(lock),
         .rst(rst),
         .clk(clk),
-        .state(state)
+        .state(state),
+        .errCount(errCount)
     );
 
     parameter clk_period = 2;

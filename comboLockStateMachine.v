@@ -13,7 +13,8 @@ module comboLockStateMachine (
 
     parameter defaultPass = 16'hFACE, override = 16'hDADA;
     parameter errMax = 3;
-    parameter  locked = 3,
+    parameter [1:0]
+                locked = 3,
                 unlocked = 1,
                 lockout = 0,
                 definePin = 2;
@@ -43,13 +44,22 @@ module comboLockStateMachine (
             case (state)
                 locked:begin
                     if( pinCode == passWord ) begin
-                        nextState <= (usrPinSet)? unlocked: definePin;
-                        errCount <= 0;
+                        if(usrPinSet) begin
+                            errCount <= 0;
+                            nextState <= unlocked;
+                        end
+                        else begin
+                            errCount <= 0;
+                            nextState <= definePin;
+                        end
+                        // nextState <= (usrPinSet)? unlocked: definePin;
+                        // errCount <= 0;
                     end
                     else begin
                         errCount <= errCount + 1;
-                        if(errCount == (errMax - 1)) nextState <= lockout;
-                        else nextState <= locked;
+                        // if(errCount == (errMax - 1)) nextState <= lockout;
+                        // else
+                        nextState <= locked;
                     end
                 end
                 definePin:begin

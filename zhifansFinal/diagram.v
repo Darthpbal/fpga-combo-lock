@@ -55,36 +55,30 @@ module diagram(
                 S1:begin
                         user_code <= in;
                         next <=S2;
-                         count_incorrect=2'b00;
+                        count_incorrect=2'b00;
                         lock <=L;//moore machine output
                    end
                 S2:begin
                         if(in==user_code)
-                         next <=S4;
+                            next <=S4;
                         else
-                         if(count_incorrect==2'b10)
-                          next <=S3;
-                         else
-                         begin
-                          count_incorrect <= count_incorrect+2'b01;
-                          next <= S2;
-                          end
-
+                        if(count_incorrect==2'b10) next <=S3;
+                        else begin
+                            count_incorrect <= count_incorrect+2'b01;
+                            next <= S2;
+                        end
                         lock <= L;
                    end
                 S3:begin
-                        if(in==16'hffff)//override code
-                         next <=S1;
-                        else
-                         next <=S3;
-
+                        if(in==16'hffff) next <=S1;
+                        else next <=S3;
                         lock <= H;
                    end
                 S4:begin
                         if(in !=user_code)
-                         next <=S2;
-                         else
-                         next <=S4;
+                            next <=S2;
+                        else
+                            next <=S4;
                         lock <= U;
                    end
                default:

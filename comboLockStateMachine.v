@@ -21,67 +21,76 @@ module comboLockStateMachine (
 
     reg [15:0] passWord = defaultPass;
     reg usrPinSet = 1'b0;
-    reg [1:0] nextState;//, errCount;
+    reg [1:0] nextState;
 
     always @ ( posedge clk, posedge rst ) begin
         if(rst) state <= locked;
         else begin
             state <= nextState;
-            // if(trig) state <= nextState;
-            // else state <= state;
         end
     end
 
-    always @ (  posedge lock, posedge trig, posedge rst ) begin
+    reg errFlag, passSetFlag, rstCountFlag;
+    wire trigSig;
+    assign trigSig = lock | trig;
+    always @ ( posedge trigSig, posedge rst ) begin
         nextState <= 2'bx;
+        errFlag <= 0;
+        passSetFlag <= 0;
+        rstCountFlag <= 0;
         if(rst) begin
-            usrPinSet <= 0;
-            passWord <= defaultPass;
             nextState <= locked;
-            errCount <= 0;
+            errFlag <= 0;
+            passSetFlag <= 0;
+            rstCountFlag <= 0;
         end
-        else if(trig | lock) begin
+        else begin
             case (state)
                 locked:begin
                     if( pinCode == passWord ) begin
-                        if(usrPinSet) begin
-                            errCount <= 0;
-                            nextState <= unlocked;
-                        end
-                        else begin
-                            errCount <= 0;
-                            nextState <= definePin;
-                        end
-                        // nextState <= (usrPinSet)? unlocked: definePin;
-                        // errCount <= 0;
+                        if(usrPinSet) nextState <= unlocked;
+                        else nextState <= definePin;
                     end
+                    else if (errCount == 2'b11) nextState <= lockout;
                     else begin
-                        errCount <= errCount + 1;
-                        // if(errCount == (errMax - 1)) nextState <= lockout;
-                        // else
                         nextState <= locked;
+                        errFlag <= 1;
                     end
                 end
                 definePin:begin
-                    passWord <= pinCode;
-                    usrPinSet <= 1;
                     nextState <= locked;
-                    errCount <= 0;
+                    passSetFlag <= 1;
+                    rstCountFlag <= 1;
                 end
                 unlocked: begin
                     if(lock) nextState <= locked;
                     else nextState <= unlocked;
+                    rstCountFlag <= 1;
                 end
                 lockout: begin
-                    if(pinCode == override) begin
-                        nextState <= definePin;
-                        errCount <= 0;
-                    end
+                    if(pinCode == override) nextState <= definePin;
                     else nextState <= lockout;
                 end
                 default: nextState <= locked;
             endcase
         end
-        else nextState <= 2'bx;
+    end
+
+    wire rstErrCount;
+    assign rstErrCount = rst | rstCountFlag;
+    always @(posedge errFlag, posedge rstErrCount) begin
+        if(rstErrCount) errCount <= 0;
+        else errCount <= errCount + 1;
+    end
+
+    always @ ( posedge passSetFlag, posedge rst ) begin
+        if(rst) begin
+            usrPinSet <= 0;
+            passWord <= defaultPass;
+        end
+        else begin
+            usrPinSet <= 1;
+            passWord <= pinCode;
+        end
     end
 endmodule

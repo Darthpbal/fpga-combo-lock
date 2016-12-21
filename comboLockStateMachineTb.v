@@ -104,6 +104,13 @@ module comboLockStateMachine_tb ();
         #(clk_period * 3);
         trig = 0;
         #(clk_period * 3);
+        
+        pinCode = 16'hDADA;
+        #(clk_period * 3);
+        trig = 1;
+        #(clk_period * 3);
+        trig = 0;
+        #(clk_period * 3);
 
         pinCode = 16'hABBA;
         #(clk_period * 3);

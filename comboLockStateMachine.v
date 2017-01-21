@@ -100,11 +100,6 @@ endmodule
 
 Clock problem with Spartan 6
 
-up vote
-6
-down vote
-favorite
-1
 I have a clock divider implemented as follows:
 
 module sync_out(
@@ -145,12 +140,8 @@ Place:1136 - This design contains a global buffer instance,
    < PIN "clock_deskew_0/BUFG_inst.O" CLOCK_DEDICATED_ROUTE = FALSE; >
 What exactly is the problem here, and how can I fix it?
 
-verilog
-shareimprove this question
-asked Jun 25 '12 at 9:29
 
 Randomblue
-3,9521558126
 
 In addition to the error you've asked about, be aware that if SYNC_OUT_CLOCK_RATIO is 20, you'll actually have a divide-by-21 function. Even if you already noticed this, it will be potentially confusing for anyone who has to read your code. – The Photon Jun 25 '12 at 16:25
 add a comment
